@@ -29,7 +29,7 @@ defmodule PlateSlateWeb.Schema do
   input_object :menu_items_filter do
     field :matching, :string
     field :priced_above, :decimal
-    field :priced_belo, :decimal
+    field :priced_below, :decimal
   end
 
   @desc """
