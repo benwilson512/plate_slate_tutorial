@@ -23,7 +23,7 @@ defmodule PlateSlate.Menu do
 
   defp filter_with(query, filter) do
     Enum.reduce(filter, query, fn
-      {:name, name}, query ->
+      {:matching, name}, query ->
         from q in query, where: ilike(q.name, ^"%#{name}%")
       {:priced_above, price}, query ->
         from q in query, where: q.price >= ^price
