@@ -6,6 +6,18 @@ defmodule PlateSlate.Menu do
   import Ecto.Query, warn: false
   alias PlateSlate.Repo
 
+  alias PlateSlate.Menu.Item
+
+  def list_menu_items(%{matching: term}) do
+    Item
+    |> where([item], ilike(item.name, ^"%#{term}%"))
+    |> Repo.all
+  end
+  def list_menu_items(_) do
+    Item
+    |> Repo.all
+  end
+
   alias PlateSlate.Menu.Category
 
   @doc """
