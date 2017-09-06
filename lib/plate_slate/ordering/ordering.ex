@@ -63,7 +63,7 @@ defmodule PlateSlate.Ordering do
   defp build_items(items) do
     for item <- items do
       menu_item = PlateSlate.Menu.Item |> Repo.get!(item.menu_item_id)
-      %{name: menu_item.name, quantity: item.quantity, price: menu_item.price}
+      %{menu_item_id: menu_item.id, quantity: item.quantity, price: menu_item.price}
     end
   end
 

@@ -1,5 +1,6 @@
 defmodule PlateSlateWeb.Schema.MenuTypes do
   use Absinthe.Schema.Notation
+  use Absinthe.Ecto, repo: PlateSlate.Repo
 
   input_object :menu_items_filter do
     field :matching, :string
@@ -16,5 +17,10 @@ defmodule PlateSlateWeb.Schema.MenuTypes do
     field :name, :string
     field :description, :string
     field :price, :float
+    field :category, :category, resolve: assoc(:category)
+  end
+
+  object :category do
+    field :name, :string
   end
 end
