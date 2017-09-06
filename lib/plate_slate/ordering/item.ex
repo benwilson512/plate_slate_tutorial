@@ -7,8 +7,8 @@ defmodule PlateSlate.Ordering.Item do
   schema "order_items" do
     field :price, :decimal
     field :quantity, :integer
-    field :order_id, :id
-    field :menu_item_id, :id
+    belongs_to :order, PlateSlate.Ordering.Order
+    belongs_to :menu_item, PlateSlate.Menu.Item
 
     timestamps()
   end
