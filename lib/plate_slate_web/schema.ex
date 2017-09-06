@@ -3,7 +3,12 @@ defmodule PlateSlateWeb.Schema do
   # also see Absinthe.Schema.Notation
 
   query do
-    field :health, :string
+    field :menu_items, list_of(:menu_item) do
+      resolve fn _, _, _ ->
+        schema = PlateSlate.Menu.Item
+        {:ok, PlateSlate.Repo.all(schema)}
+      end
+    end
   end
 
   @desc """
@@ -14,5 +19,6 @@ defmodule PlateSlateWeb.Schema do
     @desc "The name of the item"
     field :name, :string
     field :description, :string
+    field :price, :float
   end
 end
