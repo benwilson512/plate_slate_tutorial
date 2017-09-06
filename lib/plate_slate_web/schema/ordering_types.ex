@@ -1,5 +1,5 @@
 defmodule PlateSlateWeb.Schema.OrderingTypes do
-  use Absinthe.Schema.Notations
+  use Absinthe.Schema.Notation
 
   object :order do
     field :customer_number, :integer

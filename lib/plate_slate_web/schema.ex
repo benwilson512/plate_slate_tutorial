@@ -3,6 +3,7 @@ defmodule PlateSlateWeb.Schema do
 
   import_types __MODULE__.MenuTypes
   import_types __MODULE__.OrderingTypes
+  import_types Absinthe.Type.Custom
 
   alias PlateSlateWeb.Resolvers
 
@@ -25,13 +26,13 @@ defmodule PlateSlateWeb.Schema do
     value :desc
   end
 
-  scalar :decimal do
-    parse fn
-      %{value: value}, _ ->
-        Decimal.parse(value)
-      _, _ ->
-        :error
-    end
-    serialize &to_string/1
-  end
+  # scalar :decimal do
+  #   parse fn
+  #     %{value: value}, _ ->
+  #       Decimal.parse(value)
+  #     _, _ ->
+  #       :error
+  #   end
+  #   serialize &to_string/1
+  # end
 end
