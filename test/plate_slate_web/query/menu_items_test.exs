@@ -15,16 +15,16 @@ defmodule PlateSlateWeb.Query.MenuItemsTest do
     conn = get build_conn(), "/", query: query
 
     assert %{"data" => %{"menuItems" => [item |_] }} = json_response(conn, 200)
-    assert item == %{"name" => "Rueben"}
+    assert item == %{"name" => "Bánh mì"}
   end
 
   @query """
-  query ($term: String) {
-    menuItems(matching:$term) { name}
+  query ($filter: MenuItemsFilter) {
+    menuItems(filter:$filter) { name}
   }
   """
   test "list menu items with filter and variables" do
-    variables = %{"term" => "Rue"}
+    variables = %{"filter" => %{"matching" => "Rue"}}
     conn = get build_conn(), "/", query: @query, variables: variables
 
     assert %{"data" => %{"menuItems" => [item] }} = json_response(conn, 200)
@@ -32,7 +32,7 @@ defmodule PlateSlateWeb.Query.MenuItemsTest do
   end
 
   test "list menu items with filter + variables + POST" do
-    variables = %{"term" => "Rue"}
+    variables = %{"filter" => %{"matching" => "Rue"}}
     conn =
       build_conn()
       |> Plug.Conn.put_req_header("content-type", "application/json")
@@ -50,11 +50,11 @@ defmodule PlateSlateWeb.Query.MenuItemsTest do
       |> post("/", %{"query" => query})
 
     assert %{"data" => %{"menuItems" => [item |_] }} = json_response(conn, 200)
-    assert item == %{"name" => "Rueben"}
+    assert item == %{"name" => "Bánh mì"}
   end
 
   test "list menu items with filter" do
-    query = "{ menuItems(matching: \"Rue\") { name } }"
+    query = "{ menuItems(filter: {matching: \"Rue\"}) { name } }"
     conn =
       build_conn()
       |> Plug.Conn.put_req_header("content-type", "application/json")
