@@ -1,12 +1,26 @@
 defmodule PlateSlateWeb.Schema do
   use Absinthe.Schema
-  # also see Absinthe.Schema.Notation
+
+  import Ecto.Query
+  alias PlateSlate.{Menu, Repo}
 
   query do
     field :menu_items, list_of(:menu_item) do
-      resolve fn _, _, _ ->
-        schema = PlateSlate.Menu.Item
-        {:ok, PlateSlate.Repo.all(schema)}
+      arg :matching, :string
+
+      resolve fn
+        _, %{matching: term}, _ ->
+          items =
+            Menu.Item
+            |> where([i], ilike(i.name, ^"%#{term}%"))
+            |> Repo.all
+          {:ok, items}
+
+        _, _, _ ->
+          items =
+            Menu.Item
+            |> Repo.all
+          {:ok, items}
       end
     end
   end
