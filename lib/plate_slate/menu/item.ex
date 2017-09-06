@@ -8,7 +8,8 @@ defmodule PlateSlate.Menu.Item do
     field :description, :string
     field :name, :string
     field :price, :decimal
-    field :category_id, :id
+
+    belongs_to :category, PlateSlate.Menu.Category
 
     timestamps()
   end
