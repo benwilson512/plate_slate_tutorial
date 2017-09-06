@@ -1,6 +1,8 @@
 defmodule PlateSlateWeb.Schema do
   use Absinthe.Schema
 
+  import_types __MODULE__.MenuTypes
+
   alias PlateSlateWeb.Resolvers
 
   query do
@@ -9,6 +11,16 @@ defmodule PlateSlateWeb.Schema do
       arg :order, :sort_order, default_value: :asc
       resolve &Resolvers.Menu.menu_items/3
     end
+  end
+
+  mutation do
+    field :place_order, :order do
+
+    end
+  end
+
+  object :order do
+
   end
 
   enum :sort_order do
@@ -24,22 +36,5 @@ defmodule PlateSlateWeb.Schema do
         :error
     end
     serialize &to_string/1
-  end
-
-  input_object :menu_items_filter do
-    field :matching, :string
-    field :priced_above, :decimal
-    field :priced_below, :decimal
-  end
-
-  @desc """
-  Tasty thing to eat!
-  """
-  object :menu_item do
-    field :id, :id
-    @desc "The name of the item"
-    field :name, :string
-    field :description, :string
-    field :price, :float
   end
 end
