@@ -2,6 +2,7 @@ defmodule PlateSlateWeb.Schema do
   use Absinthe.Schema
 
   import_types __MODULE__.MenuTypes
+  import_types __MODULE__.OrderingTypes
 
   alias PlateSlateWeb.Resolvers
 
@@ -17,10 +18,6 @@ defmodule PlateSlateWeb.Schema do
     field :place_order, :order do
 
     end
-  end
-
-  object :order do
-
   end
 
   enum :sort_order do
