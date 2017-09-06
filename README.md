@@ -19,3 +19,10 @@ $ mkdir lib/plate_slate_web/resolvers
 $ touch lib/plate_slate_web/resolvers/menu.ex
 $ atom lib/plate_slate_web/resolvers/menu.ex
 ```
+
+## setup ordering
+```
+mix phx.gen.schema Ordering.Item order_items order_id:references:orders menu_item_id:references:items price:decimal quantity:integer
+mix phx.gen.schema Ordering.Item order_items order_id:references:orders menu_item_id:references:menu_items price:decimal quantity:integer
+mix ecto.migrate
+```
