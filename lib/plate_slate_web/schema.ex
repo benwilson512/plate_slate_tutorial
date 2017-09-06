@@ -2,8 +2,14 @@ defmodule PlateSlateWeb.Schema do
   use Absinthe.Schema
   # also see Absinthe.Schema.Notation
 
+  import Ecto.Query
+  alias PlateSlateWeb.Resolvers
+
   query do
-    field :health, :string
+    field :menu_items, list_of(:menu_item) do
+      arg :matching, :string
+      resolve &Resolvers.Menu.menu_items/3
+    end
   end
 
   @desc """
@@ -14,5 +20,6 @@ defmodule PlateSlateWeb.Schema do
     @desc "The name of the item"
     field :name, :string
     field :description, :string
+    field :price, :float
   end
 end

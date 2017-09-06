@@ -1,7 +1,7 @@
 defmodule PlateSlateWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :plate_slate
 
-  socket "/socket", PlateSlateWeb.UserSocket
+  # socket "/socket", PlateSlateWeb.UserSocket
 
   # Serve at "/" the static files from "priv/static" directory.
   #
