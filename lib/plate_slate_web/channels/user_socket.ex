@@ -1,5 +1,6 @@
 defmodule PlateSlateWeb.UserSocket do
   use Phoenix.Socket
+  use Absinthe.Phoenix.Socket
 
   ## Channels
   # channel "room:*", PlateSlateWeb.RoomChannel
@@ -20,7 +21,7 @@ defmodule PlateSlateWeb.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
   def connect(_params, socket) do
-    {:ok, socket}
+    {:ok, socket |> assign(:absinthe, %{schema: PlateSlateWeb.Schema})}
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:

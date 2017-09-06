@@ -29,6 +29,18 @@ defmodule PlateSlateWeb.Schema do
     end
   end
 
+  subscription do
+    field :order_placed, :order do
+      config fn _, _ ->
+        {:ok, topic: "*"}
+      end
+      resolve fn parent, _, _ ->
+        parent |> IO.inspect
+        {:ok, parent}
+      end
+    end
+  end
+
   enum :sort_order do
     value :asc
     value :desc
