@@ -16,7 +16,7 @@ defmodule PlateSlate.Ordering.Item do
   @doc false
   def changeset(%Item{} = item, attrs) do
     item
-    |> cast(attrs, [:price, :quantity])
+    |> cast(attrs, [:price, :quantity, :menu_item_id])
     |> validate_required([:price, :quantity])
   end
 end

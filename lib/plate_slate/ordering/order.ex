@@ -9,6 +9,8 @@ defmodule PlateSlate.Ordering.Order do
     field :ordered_at, :utc_datetime
     field :state, :string
 
+    has_many :items, PlateSlate.Ordering.Item
+
     timestamps()
   end
 
@@ -16,6 +18,7 @@ defmodule PlateSlate.Ordering.Order do
   def changeset(%Order{} = order, attrs) do
     order
     |> cast(attrs, [:customer_number, :ordered_at, :state])
+    |> cast_assoc(:items)
     |> validate_required([:customer_number, :ordered_at, :state])
   end
 end

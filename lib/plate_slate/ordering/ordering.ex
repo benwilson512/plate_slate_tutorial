@@ -50,9 +50,21 @@ defmodule PlateSlate.Ordering do
 
   """
   def create_order(attrs \\ %{}) do
-    %Order{}
+    attrs = Map.update(attrs, :items, [], &build_items/1)
+
+    %Order{
+      state: "created",
+      ordered_at: DateTime.utc_now,
+    }
     |> Order.changeset(attrs)
     |> Repo.insert()
+  end
+
+  defp build_items(items) do
+    for item <- items do
+      menu_item = PlateSlate.Menu.Item |> Repo.get!(item.menu_item_id)
+      %{name: menu_item.name, quantity: item.quantity, price: menu_item.price}
+    end
   end
 
   @doc """
