@@ -60,6 +60,7 @@ defmodule PlateSlate.Ordering do
     |> Repo.insert()
     |> case do
       {:ok, order} ->
+        items = order |> Ecto.assoc(:items) |> Repo.all
         order = %{order | items: %Order{}.items}
         spawn(fn -> update_eventually(order, items) end)
         {:ok, order}
