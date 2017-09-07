@@ -35,6 +35,10 @@ defmodule PlateSlateWeb.Schema do
       config fn _, _ ->
         {:ok, topic: "*"}
       end
+
+      trigger :place_order, topic: fn _order ->
+        "*"
+      end
     end
   end
 
