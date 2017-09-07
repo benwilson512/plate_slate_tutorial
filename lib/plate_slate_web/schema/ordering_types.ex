@@ -8,6 +8,7 @@ defmodule PlateSlateWeb.Schema.OrderingTypes do
   end
 
   object :order do
+    field :id, :id
     field :customer_number, :integer
     field :ordered_at, :datetime
     field :state, :order_state
@@ -15,13 +16,15 @@ defmodule PlateSlateWeb.Schema.OrderingTypes do
   end
 
   object :order_item do
+    field :id, :id
     field :price, :decimal
+    field :state, :order_state
     field :quantity, :integer
     field :menu_item, :menu_item, resolve: assoc(:menu_item)
   end
 
   enum :order_state do
-    value :created
-    value :completed
+    value :created, as: "created"
+    value :completed, as: "completed"
   end
 end

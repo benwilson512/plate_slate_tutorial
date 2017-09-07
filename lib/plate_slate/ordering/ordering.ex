@@ -58,6 +58,35 @@ defmodule PlateSlate.Ordering do
     }
     |> Order.changeset(attrs)
     |> Repo.insert()
+    |> case do
+      {:ok, order} ->
+        order = %{order | items: %Order{}.items}
+        spawn(fn -> update_eventually(order, items) end)
+        {:ok, order}
+    end
+  end
+
+  defp update_eventually(order, []) do
+    order
+    |> Ecto.Changeset.change(%{state: "completed"})
+    |> Repo.update!
+    |> broadcast
+  end
+
+  defp update_eventually(order, [item | items]) do
+    :timer.sleep(:rand.uniform(5_000))
+
+    item
+    |> Ecto.Changeset.change(%{state: "completed"})
+    |> Repo.update!
+    order |> IO.inspect
+    broadcast(order)
+
+    update_eventually(order, items)
+  end
+
+  defp broadcast(order) do
+    Absinthe.Subscription.publish(PlateSlateWeb.Endpoint, order, order_updated: "*")
   end
 
   defp build_items(items) do

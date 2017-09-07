@@ -7,6 +7,7 @@ defmodule PlateSlate.Ordering.Item do
   schema "order_items" do
     field :price, :decimal
     field :quantity, :integer
+    field :state, :string, default: "created"
     belongs_to :order, PlateSlate.Ordering.Order
     belongs_to :menu_item, PlateSlate.Menu.Item
 
@@ -16,7 +17,7 @@ defmodule PlateSlate.Ordering.Item do
   @doc false
   def changeset(%Item{} = item, attrs) do
     item
-    |> cast(attrs, [:price, :quantity, :menu_item_id])
+    |> cast(attrs, [:price, :quantity, :menu_item_id, :state])
     |> validate_required([:price, :quantity])
   end
 end

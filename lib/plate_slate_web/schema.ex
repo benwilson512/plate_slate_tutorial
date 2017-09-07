@@ -40,20 +40,16 @@ defmodule PlateSlateWeb.Schema do
         "*"
       end
     end
+
+    field :order_updated, :order do
+      config fn _, _ ->
+        {:ok, topic: "*"}
+      end
+    end
   end
 
   enum :sort_order do
     value :asc
     value :desc
   end
-
-  # scalar :decimal do
-  #   parse fn
-  #     %{value: value}, _ ->
-  #       Decimal.parse(value)
-  #     _, _ ->
-  #       :error
-  #   end
-  #   serialize &to_string/1
-  # end
 end
