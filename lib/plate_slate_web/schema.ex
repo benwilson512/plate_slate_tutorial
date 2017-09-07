@@ -25,6 +25,7 @@ defmodule PlateSlateWeb.Schema do
     field :place_order, :order do
       arg :items, non_null(list_of(non_null(:place_order_input)))
       arg :customer_number, non_null(:integer)
+
       resolve &Resolvers.Ordering.place_order/3
     end
   end
@@ -33,10 +34,6 @@ defmodule PlateSlateWeb.Schema do
     field :order_placed, :order do
       config fn _, _ ->
         {:ok, topic: "*"}
-      end
-      resolve fn parent, _, _ ->
-        parent |> IO.inspect
-        {:ok, parent}
       end
     end
   end
