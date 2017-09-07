@@ -20,7 +20,7 @@ defmodule Simulator do
         items: item_generator |> Enum.take(3)
       }
       {:ok, order} = PlateSlate.Ordering.create_order(attrs)
-      Absinthe.Subscription.publish(PlateSlateWeb.Endpoint, order, order_updated: "*")
+      Absinthe.Subscription.publish(PlateSlateWeb.Endpoint, order, order_placed: "*")
       :timer.sleep(1000)
     end)
   end
