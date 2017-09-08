@@ -39,7 +39,7 @@ defmodule PlateSlateWeb.Schema do
       end
     end
 
-    field :order_completed, :order do
+    field :order_updated, :order do
       config fn _, _ ->
         {:ok, topic: "*"}
       end

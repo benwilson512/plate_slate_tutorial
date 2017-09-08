@@ -32,6 +32,7 @@ defmodule PlateSlateWeb.Schema.OrderingTypes do
 
   enum :order_state do
     value :created, as: "created"
+    value :ready, as: "ready"
     value :completed, as: "completed"
   end
 end

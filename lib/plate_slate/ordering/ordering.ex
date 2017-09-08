@@ -77,14 +77,24 @@ defmodule PlateSlate.Ordering do
   defp update_eventually(order, []) do
     order =
       order
+      |> Ecto.Changeset.change(%{state: "ready"})
+      |> Repo.update!
+
+    Absinthe.Subscription.publish(PlateSlateWeb.Endpoint, order, order_updated: "*")
+    order_completion_time = Application.get_env(:plate_slate, :order_completion_time)
+    :timer.sleep(order_completion_time)
+
+    order =
+      order
       |> Ecto.Changeset.change(%{state: "completed"})
       |> Repo.update!
 
-    Absinthe.Subscription.publish(PlateSlateWeb.Endpoint, order, order_completed: "*")
+    Absinthe.Subscription.publish(PlateSlateWeb.Endpoint, order, order_updated: "*")
   end
 
   defp update_eventually(order, [item | items]) do
-    time = :rand.uniform(5_000) * Order.schedule_modifier(order.schedule)
+    order_item_time = Application.get_env(:plate_slate, :order_item_time)
+    time = :rand.uniform(order_item_time) * Order.schedule_modifier(order.schedule)
     :timer.sleep(trunc(time))
 
     item =
