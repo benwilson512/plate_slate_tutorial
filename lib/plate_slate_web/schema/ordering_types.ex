@@ -21,6 +21,7 @@ defmodule PlateSlateWeb.Schema.OrderingTypes do
     field :price, :decimal
     field :state, :order_state
     field :quantity, :integer
+    field :order, :order, resolve: assoc(:order)
     field :menu_item, :menu_item, resolve: assoc(:menu_item)
   end
 
