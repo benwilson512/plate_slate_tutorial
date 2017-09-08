@@ -22,7 +22,7 @@ defmodule Simulator do
       }
       {:ok, order} = PlateSlate.Ordering.create_order(attrs)
       Absinthe.Subscription.publish(PlateSlateWeb.Endpoint, order, order_placed: "*")
-      :timer.sleep(5_000)
+      :timer.sleep(1_000)
     end)
   end
 
