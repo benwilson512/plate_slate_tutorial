@@ -8,16 +8,21 @@ defmodule PlateSlate.Ordering.Order do
     field :customer_number, :integer
     field :ordered_at, :utc_datetime
     field :state, :string
+    field :schedule, :string
 
     has_many :items, PlateSlate.Ordering.Item
 
     timestamps()
   end
 
+  def schedule_modifier("normal"), do: 1.0
+  def schedule_modifier("high"), do: 0.5
+  def schedule_modifier("rush"), do: 0.25
+
   @doc false
   def changeset(%Order{} = order, attrs) do
     order
-    |> cast(attrs, [:customer_number, :ordered_at, :state])
+    |> cast(attrs, [:customer_number, :ordered_at, :state, :schedule])
     |> cast_assoc(:items)
     |> validate_required([:customer_number, :ordered_at, :state])
   end

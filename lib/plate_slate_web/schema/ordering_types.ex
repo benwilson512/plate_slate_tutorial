@@ -9,6 +9,7 @@ defmodule PlateSlateWeb.Schema.OrderingTypes do
 
   object :order do
     field :id, :id
+    field :schedule, :order_schedule
     field :customer_number, :integer
     field :ordered_at, :datetime
     field :state, :order_state
@@ -21,6 +22,12 @@ defmodule PlateSlateWeb.Schema.OrderingTypes do
     field :state, :order_state
     field :quantity, :integer
     field :menu_item, :menu_item, resolve: assoc(:menu_item)
+  end
+
+  enum :order_schedule do
+    value :rush, as: "rush"
+    value :priority, as: "priority"
+    value :normal, as: "normal"
   end
 
   enum :order_state do

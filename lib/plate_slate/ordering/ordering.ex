@@ -77,7 +77,8 @@ defmodule PlateSlate.Ordering do
   end
 
   defp update_eventually(order, [item | items]) do
-    :timer.sleep(:rand.uniform(5_000))
+    time = :rand.uniform(5_000) * Order.schedule_modifier(order.schedule)
+    :timer.sleep(trunc(time))
 
     item =
       item
