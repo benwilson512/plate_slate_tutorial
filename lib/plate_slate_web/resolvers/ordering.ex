@@ -1,20 +1,9 @@
 defmodule PlateSlateWeb.Resolvers.Ordering do
-  alias PlateSlate.{Ordering, Repo}
-  import Ecto.Query
+  alias PlateSlate.{Ordering}
 
   def orders(_, args, _) do
-    orders =
-      PlateSlate.Ordering.Order
-      |> filter(args)
-      |> Repo.all
-
-    {:ok, orders}
+    {:ok, Ordering.list_orders(args)}
   end
-
-  defp filter(query, %{state: state}) do
-    query |> where(state: ^state)
-  end
-  defp filter(query, _), do: query
 
   def place_order(_, args, _) do
     args = Map.put(args, :schedule, Ordering.Order.random_schedule())

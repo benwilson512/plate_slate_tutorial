@@ -17,8 +17,15 @@ defmodule PlateSlate.Ordering do
       [%Order{}, ...]
 
   """
-  def list_orders do
-    Repo.all(Order)
+  def list_orders(filters) do
+    filters
+    |> Enum.reduce(Order, fn
+      {:state, state}, query ->
+        query |> where(state: ^state)
+      _, query ->
+        query
+    end)
+    |> Repo.all
   end
 
   @doc """
