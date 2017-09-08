@@ -67,11 +67,31 @@ defmodule PlateSlate.Ordering do
     |> Repo.insert()
     |> case do
       {:ok, order} ->
-        items = order |> Ecto.assoc(:items) |> Repo.all
         order = %{order | items: %Order{}.items}
-        spawn(fn -> update_eventually(order, items) end)
+        advance(order)
         {:ok, order}
     end
+  end
+
+  def advance(%{state: "created"} = order) do
+    items = order |> Ecto.assoc(:items) |> Repo.all
+    spawn(fn -> update_eventually(order, items) end)
+  end
+  def advance(%{state: "ready"} = order) do
+    spawn(fn ->
+      complete_eventually(order)
+    end)
+  end
+
+  defp complete_eventually(order) do
+    order_completion_time = Application.get_env(:plate_slate, :order_completion_time)
+    :timer.sleep(:rand.uniform(order_completion_time))
+    order =
+      order
+      |> Ecto.Changeset.change(%{state: "completed"})
+      |> Repo.update!
+
+    Absinthe.Subscription.publish(PlateSlateWeb.Endpoint, order, order_updated: "*")
   end
 
   defp update_eventually(order, []) do
@@ -81,15 +101,7 @@ defmodule PlateSlate.Ordering do
       |> Repo.update!
 
     Absinthe.Subscription.publish(PlateSlateWeb.Endpoint, order, order_updated: "*")
-    order_completion_time = Application.get_env(:plate_slate, :order_completion_time)
-    :timer.sleep(order_completion_time)
-
-    order =
-      order
-      |> Ecto.Changeset.change(%{state: "completed"})
-      |> Repo.update!
-
-    Absinthe.Subscription.publish(PlateSlateWeb.Endpoint, order, order_updated: "*")
+    complete_eventually(order)
   end
 
   defp update_eventually(order, [item | items]) do
