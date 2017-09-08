@@ -1,6 +1,6 @@
 defmodule Simulator do
   def stream do
-    alias PlateSlate.Repo
+    alias PlateSlate.{Repo, Ordering}
 
     random_item = fn ->
       order = PlateSlate.Menu.Item
@@ -14,13 +14,11 @@ defmodule Simulator do
 
     item_generator = Stream.repeatedly(random_item)
 
-    schedule_possibilities = List.duplicate("normal", 7) ++ ["high", "high"] ++ ["rush"]
-
     Stream.iterate(0, &(&1 + 1)) |> Stream.each(fn i ->
       attrs = %{
         customer_number: i,
         items: item_generator |> Enum.take(3),
-        schedule: Enum.at(schedule_possibilities, :rand.uniform(length(schedule_possibilities) - 1)),
+        schedule: Ordering.Order.random_schedule(),
       }
       {:ok, order} = PlateSlate.Ordering.create_order(attrs)
       Absinthe.Subscription.publish(PlateSlateWeb.Endpoint, order, order_placed: "*")
