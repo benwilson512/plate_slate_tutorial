@@ -24,7 +24,6 @@ defmodule PlateSlateWeb.Schema do
   mutation do
     field :place_order, :order do
       arg :items, non_null(list_of(non_null(:place_order_input)))
-      arg :customer_number, non_null(:integer)
 
       resolve &Resolvers.Ordering.place_order/3
     end
