@@ -15,9 +15,8 @@ defmodule PlateSlateWeb.Schema do
     end
 
     field :orders, list_of(:order) do
-      resolve fn _, _, _ ->
-        {:ok, PlateSlate.Repo.all(PlateSlate.Ordering.Order)}
-      end
+      arg :state, :order_state
+      resolve &Resolvers.Ordering.orders/3
     end
   end
 
