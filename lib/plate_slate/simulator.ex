@@ -21,7 +21,7 @@ defmodule Simulator do
         schedule: Ordering.Order.random_schedule(),
       }
       {:ok, order} = PlateSlate.Ordering.create_order(attrs)
-      Absinthe.Subscription.publish(PlateSlateWeb.Endpoint, order, order_placed: "*")
+      Absinthe.Subscription.publish(PlateSlateWeb.Endpoint, order, order_updated: "*")
       :timer.sleep(1_000)
     end)
   end
