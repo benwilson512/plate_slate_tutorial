@@ -8,8 +8,7 @@ use Mix.Config
 # General application configuration
 config :plate_slate,
   ecto_repos: [PlateSlate.Repo],
-  order_item_time: 5_000,
-  order_completion_time: 20_000
+  time: 30_000
 
 # Configures the endpoint
 config :plate_slate, PlateSlateWeb.Endpoint,

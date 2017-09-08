@@ -73,6 +73,10 @@ defmodule PlateSlate.Ordering do
     end
   end
 
+  # All the following spawn stuff is totally insane, don't ever do this in production.
+  # This exists soley to simulate some other actions happening to the order, and in a
+  # way that was totally thrown together at the last moment.
+
   def advance(%{state: "created"} = order) do
     items = order |> Ecto.assoc(:items) |> Repo.all
     spawn(fn -> update_eventually(order, items) end)
@@ -84,7 +88,7 @@ defmodule PlateSlate.Ordering do
   end
 
   defp complete_eventually(order) do
-    order_completion_time = Application.get_env(:plate_slate, :order_completion_time)
+    order_completion_time = Application.get_env(:plate_slate, :time)
     :timer.sleep(:rand.uniform(order_completion_time))
     order =
       order
@@ -105,7 +109,7 @@ defmodule PlateSlate.Ordering do
   end
 
   defp update_eventually(order, [item | items]) do
-    order_item_time = Application.get_env(:plate_slate, :order_item_time)
+    order_item_time = Application.get_env(:plate_slate, :time)
     time = :rand.uniform(order_item_time) * Order.schedule_modifier(order.schedule)
     :timer.sleep(trunc(time))
 

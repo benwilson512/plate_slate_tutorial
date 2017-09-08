@@ -8,8 +8,8 @@ use Mix.Config
 # with brunch.io to recompile .js and .css sources.
 config :plate_slate, PlateSlateWeb.Endpoint,
   http: [port: 4000],
-  debug_errors: true,
-  code_reloader: true,
+  debug_errors: false,
+  code_reloader: false,
   check_origin: false,
   watchers: []
 
@@ -43,4 +43,4 @@ config :plate_slate, PlateSlate.Repo,
   password: "postgres",
   database: "plate_slate_dev",
   hostname: "localhost",
-  pool_size: 10
+  pool_size: 30

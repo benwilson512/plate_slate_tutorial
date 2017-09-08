@@ -15,6 +15,7 @@ defmodule PlateSlate.Ordering.Order do
     timestamps()
   end
 
+  # lol
   def random_schedule do
     schedule_possibilities = List.duplicate("normal", 7) ++ ["priority", "priority"] ++ ["rush"]
     Enum.at(schedule_possibilities, :rand.uniform(length(schedule_possibilities) - 1))
